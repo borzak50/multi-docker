@@ -19,6 +19,7 @@ after_success:
   #login to docker cli
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
+
   # take the images and push them to docker hub
   - docker push borzak50/multi-client
   - docker push borzak50/multi-nginx
