@@ -1,26 +1,21 @@
-language: generic
 sudo: required
 services:
- - docker
+  - docker
 
 before_install:
-   - docker build -t borzak50/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t borzak50/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true borzak50/react-test npm test
-  #- docker run borzak50/react-test npm test -- --coverage
+  - docker run borzak50/react-test npm test -- --coverage
 
 after_success:
   - docker build -t borzak50/multi-client ./client
   - docker build -t borzak50/multi-nginx ./nginx
   - docker build -t borzak50/multi-server ./server
   - docker build -t borzak50/multi-worker ./worker
-
-  #login to docker cli
+  # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-
-
-  # take the images and push them to docker hub
+  # Take those images and push them to docker hub
   - docker push borzak50/multi-client
   - docker push borzak50/multi-nginx
   - docker push borzak50/multi-server
